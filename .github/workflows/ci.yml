@@ -21,3 +21,5 @@ jobs:
 
       - name: T2 判分管线自检（零 API 调用）
         run: node t2/smoke-ab.mjs --dry
+      - name: demo 自检（样例技能库 → 先红后绿）
+        run: node demo/run.mjs --assert

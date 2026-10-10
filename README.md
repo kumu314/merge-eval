@@ -28,6 +28,9 @@
 需要 Node ≥ 20.11（用了 `import.meta.dirname` 与内置 `fetch`）。
 
 ```bash
+# 0) 一键看效果：拿仓库自带的样例技能库跑，先红后绿（零配置、零 API）
+node demo/run.mjs
+
 # 1) T2 判分管线自检：零 API 调用，证明"判据真的能区分好坏答案"
 node t2/smoke-ab.mjs --dry
 
@@ -91,6 +94,7 @@ control pass = 0%    treated pass = 100%    lift = 100 个百分点
 
 ```
 agent-evals/
+├── demo/              一键 demo：自带样例技能库，先红后绿（零配置）
 ├── fleet-eval/        技能库回归（11 项断言，零 API 成本）
 │   ├── fleet-eval.mjs
 │   ├── drill-a1a2.mjs     反向验证脚本：证明新增断言真的会红

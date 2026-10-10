@@ -14,3 +14,6 @@ __pycache__/
 # 备份文件
 *.bak
 *.bak-*
+
+# demo 样例里故意放了一个 .bak 文件（演示 junk.absent 会抓到它）—— 它是测试数据，别被忽略
+!demo/fixture-broken/skills/beta/cache.bak
