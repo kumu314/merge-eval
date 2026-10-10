@@ -1,0 +1,16 @@
+# 套件生成的评测报告
+out/
+
+# 本地发布脚本
+push.cmd
+
+# 调试/探针转储
+*.out
+
+# 依赖与缓存
+node_modules/
+__pycache__/
+
+# 备份文件
+*.bak
+*.bak-*

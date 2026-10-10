@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 语法检查（全部 .mjs）
+        run: |
+          set -e
+          find . -name '*.mjs' -not -path './node_modules/*' -print0 \
+            | xargs -0 -n1 node --check
+
+      - name: T2 判分管线自检（零 API 调用）
+        run: node t2/smoke-ab.mjs --dry
