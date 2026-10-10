@@ -1,5 +1,7 @@
 # agent-evals
 
+[![ci](https://github.com/kumu314/agent-evals/actions/workflows/ci.yml/badge.svg)](https://github.com/kumu314/agent-evals/actions/workflows/ci.yml)
+
 把「AI agent 干活到底靠不靠谱」写成可机械判定的断言，每次改动后跑一遍，掉了就报红。
 
 三个子套件，按"要不要花钱"分层：
@@ -40,6 +42,51 @@ node merge-eval/merge-eval.mjs --trials 2
 
 各套件的环境变量、判据清单、以及踩过的坑，都在各子目录的 README 里。
 
+## 跑起来长什么样
+
+零配置、不花钱的那条命令（CI 也跑它）：
+
+```bash
+node t2/smoke-ab.mjs --dry
+```
+
+它用预置答案走一遍判分管线，证明「判据真的能把好答案和坏答案分开」。完整输出：
+
+```text
+provider = DRY (零调用)
+tasks    = bad-advice-runtime(runtime-resolution-and-abi), merge-verify-ritual(silent-failure-triage), guard-never-fires(silent-failure-triage), tautology-detector(criterion-self-evidence-check)   trials/arm = 3   arms = control+treated
+------------------------------------------------------------------------
+[control] bad-advice-runtime t1  FAIL      (无命中)  61c
+[control] bad-advice-runtime t2  FAIL      (无命中)  61c
+[control] bad-advice-runtime t3  FAIL      (无命中)  61c
+[treated] bad-advice-runtime t1  PASS      否定便条,钉死手法  185c
+[treated] bad-advice-runtime t2  PASS      否定便条,钉死手法  185c
+[treated] bad-advice-runtime t3  PASS      否定便条,钉死手法  185c
+[control] merge-verify-ritual t1  FAIL      (无命中)  70c
+[control] merge-verify-ritual t2  FAIL      (无命中)  70c
+[control] merge-verify-ritual t3  FAIL      (无命中)  70c
+[treated] merge-verify-ritual t1  PASS      退出码0无信息,REST口径陷阱,正确复核  229c
+[treated] merge-verify-ritual t2  PASS      退出码0无信息,REST口径陷阱,正确复核  229c
+[treated] merge-verify-ritual t3  PASS      退出码0无信息,REST口径陷阱,正确复核  229c
+[control] guard-never-fires  t1  FAIL      (无命中)  92c
+[control] guard-never-fires  t2  FAIL      (无命中)  92c
+[control] guard-never-fires  t3  FAIL      (无命中)  92c
+[treated] guard-never-fires  t1  PASS      列序根因,恒假死代码  175c
+[treated] guard-never-fires  t2  PASS      列序根因,恒假死代码  175c
+[treated] guard-never-fires  t3  PASS      列序根因,恒假死代码  175c
+[control] tautology-detector t1  FAIL      (无命中)  38c
+[control] tautology-detector t2  FAIL      (无命中)  38c
+[control] tautology-detector t3  FAIL      (无命中)  38c
+[treated] tautology-detector t1  PASS      硬编码脆弱,换统计量  90c
+[treated] tautology-detector t2  PASS      硬编码脆弱,换统计量  90c
+[treated] tautology-detector t3  PASS      硬编码脆弱,换统计量  90c
+------------------------------------------------------------------------
+control 有效 12/12（通过 0）  工具调用 0  报错 0
+treated 有效 12/12（通过 12）  工具调用 0  报错 0
+control pass = 0%    treated pass = 100%    lift = 100 个百分点
+=> 两臂可区分（管线有判别力）
+```
+
 ## 目录
 
 ```
@@ -59,6 +106,12 @@ agent-evals/
 ## 一处诚实说明
 
 `fleet-eval` 与 `merge-eval` 是从作者自己的两个真实项目里长出来的：一个共享技能库（240+ 颗技能、4 个扇出端点），一个内容站点的批量入库流程。它们的判据和踩坑记录都来自真实事故，所以文档里保留了大量"本机实测"的具体读数——这些不是设计目标，是现场证据。
+
+## 谁做的、给谁看
+
+我（[@kumu314](https://github.com/kumu314)）给自己搭的，顺手开源出来。
+
+适合手里有「坏了就麻烦、又不想每次回归都再花一笔模型调用费」的资产的人——技能库、内容库、多端分发的配置。不适合把 evals 当榜单刷的人。
 
 ## 许可
 
